@@ -5,8 +5,13 @@
 
 double f(double_t x)
 {
-    //return (sin(x));
-    return pow((x-1),2)-0;
+    return pow((x-0),3);
+    //return pow((x+5),2)+2;
+}
+double df(double_t x)//производная
+{
+    return 3*x*x;
+    //return 2*x+10;
 }
 
 int main() {
@@ -45,7 +50,9 @@ int main() {
     int *x=new int[SX/s];
     int *y=new int[SX/s];
     //ищем "центр" графика
+    /*
     for (int i = -SX/s; i <= SX/s; ++i) {
+
         double d1=f((double)(-SX/2+p-s)/mas)*mas;
         double d2=f((double)(-SX/2+p)/mas)*mas;
         double d3=f((double)(-SX/2+p+s)/mas)*mas;
@@ -53,21 +60,40 @@ int main() {
             //printf("%i %i",p,(-SX/2+p+s)/mas);
             break;}
         p+=s;
+    }*/
+    p=0; int h=0;
+    while (df(p)!=0)
+    {
+        h++;
+        printf("%i %f\n",p,df(p));
+        p=pow(-1,h+1)*(int)(h/2);
     }
+    xc=p*mas+SX/2;
+    printf("%i %f\n",p,xc);
     yc=(int)(-f((double)(-SX/2+xc)/mas)*mas);
-    //printf("%f %f",xc,yc);
+
     //рисование осей по центру окна
 
-        sf::Vertex lineX[] =
-                {
-                        sf::Vertex(sf::Vector2f(0, SY / 2-yc)),
-                        sf::Vertex(sf::Vector2f(SX , SY / 2-yc))
-                };
-        sf::Vertex lineY[] =
-                {
-                        sf::Vertex(sf::Vector2f(SX-xc, 0)),
-                        sf::Vertex(sf::Vector2f(SX-xc, SY ))
-                };
+    sf::Vertex lineX[] =
+            {
+                    sf::Vertex(sf::Vector2f(0, SY / 2-yc)),
+                    sf::Vertex(sf::Vector2f(SX , SY / 2-yc))
+            };
+    sf::Vertex lineY[] =
+            {
+                    sf::Vertex(sf::Vector2f(SX-xc, 0)),
+                    sf::Vertex(sf::Vector2f(SX-xc, SY ))
+            };
+    sf::Vertex lineMy[] =
+            {
+                    sf::Vertex(sf::Vector2f((SX-xc+mas)*1.f, (SY/2-mas/2-yc))),
+                    sf::Vertex(sf::Vector2f((SX-xc+mas)*1.f, (SY/2+mas/2-yc)))
+            };
+    sf::Vertex lineMx[] =
+            {
+                    sf::Vertex(sf::Vector2f((SX-xc-mas/2)*1.f, (SY/2-mas-yc))),
+                    sf::Vertex(sf::Vector2f((SX-xc+mas/2)*1.f, (SY/2-mas-yc)))
+            };
 
 
     //обсчет графика
@@ -105,10 +131,10 @@ int main() {
 
         window.draw(lineX, 2, sf::Lines);
         window.draw(lineY, 2, sf::Lines);
-         /*
-        window.draw(lineMy, 2, sf::Lines);
-        window.draw(lineMx, 2, sf::Lines);
-*/
+
+       window.draw(lineMy, 2, sf::Lines);
+       window.draw(lineMx, 2, sf::Lines);
+
 
         window.display();
     }
